@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getProfile } from "../store/actions/UserHeaderAction";
+import { getProfile } from "../store/actions/Actions";
 
 import UserHeader from "../components/UserHeader";
 import UserData from "../components/UserData";

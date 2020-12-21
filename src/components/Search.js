@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
-import { getProfile } from "../store/actions/UserHeaderAction";
-import {
-  BrowserRouter as Router,
-  useHistory,
-  useParams,
-} from "react-router-dom";
+import { BrowserRouter as Router, useHistory } from "react-router-dom";
 
 const Search = (props) => {
   const [username, setUsername] = useState("");
