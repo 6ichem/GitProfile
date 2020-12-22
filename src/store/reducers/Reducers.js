@@ -1,7 +1,9 @@
-import { GET_INFO } from "../types";
+import { GET_INFO, GET_REPOS } from "../types";
 
 const initialState = {
   info: [],
+  repos: [],
+  loading: true,
 };
 
 export default function searchReducer(state = initialState, action) {
@@ -10,6 +12,12 @@ export default function searchReducer(state = initialState, action) {
       return {
         ...state,
         info: action.payload,
+        loading: false,
+      };
+    case GET_REPOS:
+      return {
+        ...state,
+        repos: action.payload,
         loading: false,
       };
     default:
