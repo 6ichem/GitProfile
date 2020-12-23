@@ -16,12 +16,13 @@ const User = (props) => {
   const { info } = props.info;
   const { repos } = props.repos;
   const { username } = useParams();
+
   return (
     <div className='user'>
       <UserHeader info={info} />
       <div className='user-data'>
         <UserData username={username} repos={repos} />
-        <TopRepos />
+        <TopRepos username={username} repos={repos} />
       </div>
     </div>
   );

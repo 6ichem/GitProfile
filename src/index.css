@@ -4,11 +4,15 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #e0eafc;
+  background: rgb(246, 248, 250);
 }
 
 code {
@@ -34,5 +38,5 @@ code {
 }
 
 .custom-shape-divider-bottom-1608392670 .shape-fill {
-  fill: #e0eafc;
+  fill: rgb(246, 248, 250);
 }

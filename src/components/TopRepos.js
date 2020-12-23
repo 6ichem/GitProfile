@@ -1,47 +1,148 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Colors from "./Colors";
 
-const TopRepos = () => {
+const TopRepos = (props) => {
+  const repos = props.repos;
+
+  const [topRepos, setTopRepos] = useState([]);
+  const [sortType, setSortType] = useState("stars");
+  const [data, setData] = useState(8);
+
+  const getTopRepos = (type) => {
+    const map = {
+      stars: "stargazers_count",
+      forks: "forks_count",
+      size: "size",
+    };
+    const sortProperty = map[type];
+    const sorted =
+      repos &&
+      repos
+        .filter((repo) => !repo.fork)
+        .sort((a, b) => b[sortProperty] - a[sortProperty]);
+
+    setTopRepos(sorted);
+  };
+
+  console.log(topRepos);
+
+  useEffect(() => {
+    getTopRepos(sortType);
+  }, [sortType]);
+
+  const sortTypes = ["stars", "forks", "size"];
+
+  const loadMoreData = () => {
+    setData((prevState) => prevState + 8);
+  };
+
+  const changeRepoSort = (sortType) => {
+    setSortType(sortType);
+  };
+
   return (
-    <div>
-      <div className='container mx-auto p-8 text-black'>
-        <h1 className='text-black text-3xl leading-relaxed block mb-2'>
-          Most popular repositories:
+    <div className='container m-auto pb-24'>
+      <div className='dropdown-wrapper mb-3'>
+        <h1 className='text-black text-2xl leading-relaxed block mr-2'>
+          {props.username}'s top repositories:
         </h1>
-        <div className='flex flex-row flex-wrap -mx-2'>
-          <div className='w-full sm:w-1/2 md:w-1/3 mb-4 px-2'>
-            <div className='relative bg-white rounded border'>
-              <div className='p-4'>
-                <h3 className='text-lg font-bold'>
-                  <svg
-                    aria-hidden='true'
-                    className='mr-2'
-                    height='16'
-                    role='img'
-                    viewBox='0 0 12 16'
-                    style={{
-                      display: "inline-block",
-                      fill: "currentcolor",
-                      userSelect: "none",
-                    }}
-                    width='12'>
-                    <path
-                      fillRule='evenodd'
-                      d='M4 9H3V8h1v1zm0-3H3v1h1V6zm0-2H3v1h1V4zm0-2H3v1h1V2zm8-1v12c0 .55-.45 1-1 1H6v2l-1.5-1.5L3 16v-2H1c-.55 0-1-.45-1-1V1c0-.55.45-1 1-1h10c.55 0 1 .45 1 1zm-1 10H1v2h2v-1h3v1h5v-2zm0-10H2v9h9V1z'></path>
-                  </svg>
-                  <a className='stretched-link' href='#'>
-                    Repo title
-                  </a>
-                </h3>
-                <time
-                  className='block mb-2 text-sm text-gray-600'
-                  dateTime='2019-01-01'>
-                  1st January 2019
-                </time>
-                <p className='font-thin'>Description</p>
-              </div>
-            </div>
-          </div>
+        <div class='dropdown inline-block relative'>
+          <button class='text-indigo-500 p-2 rounded inline-flex items-center'>
+            <span class='mr-1'>stars</span>
+            <svg
+              class='fill-current h-4 w-4'
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 20 20'>
+              <path d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z' />{" "}
+            </svg>
+          </button>
+          <ul class='dropdown-menu absolute text-indigo-500	pt-1'>
+            {sortTypes.map((type) => (
+              <li>
+                <button
+                  className='rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'
+                  onClick={() => changeRepoSort(type)}>
+                  {type}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
+      </div>
+
+      <div className='repo-list'>
+        <ul style={{ position: "relative" }}>
+          {topRepos &&
+            topRepos.slice(0, data).map((repo) => (
+              <li>
+                <a href={repo.html_url}>
+                  <div>
+                    <div className='name'>
+                      <h3>{repo.name}</h3>
+                    </div>
+                    <p>{repo.description}</p>
+                  </div>
+                  <div className='stats'>
+                    <div className='left'>
+                      <span>
+                        <div
+                          className='language'
+                          style={{ backgroundColor: Colors[repo.language] }}
+                        />
+                        {repo.language}
+                      </span>
+                      <span>
+                        <svg
+                          aria-hidden='true'
+                          height='16'
+                          role='img'
+                          viewBox='0 0 14 16'
+                          width='14'
+                          style={{
+                            display: "inline-block",
+                            fill: "currentcolor",
+                            userSelect: "none",
+                            verticalAlign: "text-bottom",
+                          }}>
+                          <path
+                            fill-rule='evenodd'
+                            d='M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z'></path>
+                        </svg>
+                        {repo.stargazers_count.toLocaleString()}
+                      </span>
+                      <span>
+                        <svg
+                          aria-hidden='true'
+                          height='16'
+                          role='img'
+                          viewBox='0 0 10 16'
+                          width='10'
+                          style={{
+                            display: "inline-block",
+                            fill: "currentcolor",
+                            userSelect: "none",
+                            verticalAlign: "text-bottom",
+                          }}>
+                          <path
+                            fill-rule='evenodd'
+                            d='M8 1a1.993 1.993 0 0 0-1 3.72V6L5 8 3 6V4.72A1.993 1.993 0 0 0 2 1a1.993 1.993 0 0 0-1 3.72V6.5l3 3v1.78A1.993 1.993 0 0 0 5 15a1.993 1.993 0 0 0 1-3.72V9.5l3-3V4.72A1.993 1.993 0 0 0 8 1zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3 10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3-10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z'></path>
+                        </svg>
+                        {repo.forks.toLocaleString()}
+                      </span>
+                    </div>
+                    <div className='right'>
+                      <span>{repo.size.toLocaleString()} KB</span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            ))}
+        </ul>
+        <button
+          className='flex justify-center text-indigo-500 m-auto mt-10'
+          onClick={loadMoreData}>
+          Load more repositories <span className='emoji'>⬇️</span>
+        </button>
       </div>
     </div>
   );
