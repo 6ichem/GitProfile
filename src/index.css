@@ -40,3 +40,7 @@ code {
 .custom-shape-divider-bottom-1608392670 .shape-fill {
   fill: rgb(246, 248, 250);
 }
+
+button {
+  outline: none !important;
+}

@@ -13,16 +13,18 @@ const User = (props) => {
     props.getProfile(username);
     props.getRepos(username);
   }, []);
+
   const { info } = props.info;
   const { repos } = props.repos;
+  const { loading } = props.loading;
   const { username } = useParams();
 
   return (
     <div className='user'>
-      <UserHeader info={info} />
+      <UserHeader info={info} loading={loading} />
       <div className='user-data'>
-        <UserData username={username} repos={repos} />
-        <TopRepos username={username} repos={repos} />
+        <UserData username={username} repos={repos} loading={loading} />
+        <TopRepos username={username} repos={repos} loading={loading} />
       </div>
     </div>
   );
@@ -33,6 +35,7 @@ export default connect(
     return {
       info: state.info,
       repos: state.repos,
+      loading: state.loading,
     };
   },
   {

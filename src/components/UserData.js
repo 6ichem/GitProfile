@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import GhPolyglot from "gh-polyglot";
 import { Pie, Bar, Doughnut } from "react-chartjs-2";
+import Loader from "react-loader-spinner";
 
 const UserData = (props) => {
   useEffect(() => {
     getLang();
   }, []);
+
+  const loading = props.loading;
 
   //top languages chart
   const [lang, setLang] = useState();
@@ -121,20 +124,31 @@ const UserData = (props) => {
   return (
     <main className='py-4 container m-auto'>
       <div className='px-4'>
-        <div className='block md:flex justify-between md:-mx-2'>
-          {items.data.map((i) => (
-            <div className='w-full lg:w-1/3 md:mx-2 mb-4 md:mb-0' key={i.id}>
-              <div className='bg-white rounded-lg overflow-hidden shadow relative'>
-                <div className='p-4 h-full'>
-                  <h1 className='text-black text-2xl leading-relaxed block'>
-                    {i.title}
-                  </h1>
-                  {i.chart}
+        {loading ? (
+          <Loader
+            type='Puff'
+            color='#00BFFF'
+            height={100}
+            width={100}
+            timeout={3000} //3 secs
+            style={{ display: "flex", justifyContent: "center" }}
+          />
+        ) : (
+          <div className='block md:flex justify-between md:-mx-2'>
+            {items.data.map((i) => (
+              <div className='w-full lg:w-1/3 md:mx-2 mb-4 md:mb-0' key={i.id}>
+                <div className='bg-white rounded-lg overflow-hidden shadow relative'>
+                  <div className='p-4 h-full'>
+                    <h1 className='text-black text-2xl leading-relaxed block'>
+                      {i.title}
+                    </h1>
+                    {i.chart}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

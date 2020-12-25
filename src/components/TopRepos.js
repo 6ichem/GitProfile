@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import Loader from "react-loader-spinner";
 import Colors from "./Colors";
 
 const TopRepos = (props) => {
   const repos = props.repos;
+  const loading = props.loading;
+
+  console.log(loading);
 
   const [topRepos, setTopRepos] = useState([]);
   const [sortType, setSortType] = useState("stars");
@@ -58,15 +62,25 @@ const TopRepos = (props) => {
             </svg>
           </button>
           <ul class='dropdown-menu absolute text-indigo-500	pt-1'>
-            {sortTypes.map((type) => (
-              <li>
-                <button
-                  className='rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'
-                  onClick={() => changeRepoSort(type)}>
-                  {type}
-                </button>
-              </li>
-            ))}
+            {loading ? (
+              <Loader
+                type='Puff'
+                color='#00BFFF'
+                height={100}
+                width={100}
+                timeout={3000} //3 secs
+              />
+            ) : (
+              sortTypes.map((type) => (
+                <li>
+                  <button
+                    className='rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap'
+                    onClick={() => changeRepoSort(type)}>
+                    {type}
+                  </button>
+                </li>
+              ))
+            )}
           </ul>
         </div>
       </div>
@@ -139,11 +153,13 @@ const TopRepos = (props) => {
               </li>
             ))}
         </ul>
-        <button
-          className='flex justify-center text-indigo-500 m-auto mt-10'
-          onClick={() => loadMoreData()}>
-          Load more repositories <span className='emoji'>⬇️</span>
-        </button>
+        {repos.length > 8 && (
+          <button
+            className='flex justify-center text-indigo-500 m-auto mt-10'
+            onClick={() => loadMoreData()}>
+            Load more repositories <span className='emoji'>⬇️</span>
+          </button>
+        )}
       </div>
     </div>
   );
