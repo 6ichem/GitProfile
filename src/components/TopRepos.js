@@ -15,22 +15,23 @@ const TopRepos = (props) => {
       size: "size",
     };
     const sortProperty = map[type];
-    const sorted =
-      repos &&
-      repos
-        .filter((repo) => !repo.fork)
-        .sort((a, b) => b[sortProperty] - a[sortProperty]);
+    const sorted = repos
+      .filter((repo) => !repo.fork)
+      .sort((a, b) => b[sortProperty] - a[sortProperty])
+      .slice(0, data);
 
     setTopRepos(sorted);
   };
 
-  console.log(topRepos);
+  const sortTypes = ["stars", "forks", "size"];
 
   useEffect(() => {
-    getTopRepos(sortType);
-  }, [sortType]);
+    if (repos.length) {
+      getTopRepos(sortType);
+    }
+  });
 
-  const sortTypes = ["stars", "forks", "size"];
+  useEffect(() => getTopRepos(sortType), [sortType]);
 
   const loadMoreData = () => {
     setData((prevState) => prevState + 8);
@@ -48,7 +49,7 @@ const TopRepos = (props) => {
         </h1>
         <div class='dropdown inline-block relative'>
           <button class='text-indigo-500 p-2 rounded inline-flex items-center'>
-            <span class='mr-1'>stars</span>
+            <span class='mr-1'>{sortType}</span>
             <svg
               class='fill-current h-4 w-4'
               xmlns='http://www.w3.org/2000/svg'
@@ -73,7 +74,7 @@ const TopRepos = (props) => {
       <div className='repo-list'>
         <ul style={{ position: "relative" }}>
           {topRepos &&
-            topRepos.slice(0, data).map((repo) => (
+            topRepos.map((repo) => (
               <li>
                 <a href={repo.html_url}>
                   <div>
@@ -140,7 +141,7 @@ const TopRepos = (props) => {
         </ul>
         <button
           className='flex justify-center text-indigo-500 m-auto mt-10'
-          onClick={loadMoreData}>
+          onClick={() => loadMoreData()}>
           Load more repositories <span className='emoji'>⬇️</span>
         </button>
       </div>
