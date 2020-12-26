@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const Search = (props) => {
   const [username, setUsername] = useState("");
